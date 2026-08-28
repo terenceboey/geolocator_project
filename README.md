@@ -167,3 +167,14 @@ The app uses a custom Mapbox style with globe projection:
 style: "mapbox://styles/renceboey/cmt6tk6rx006q01skha9ndkbs",
 projection: "globe"
 ```
+
+## References
+
+- [Mapbox GL JS documentation](https://docs.mapbox.com/mapbox-gl-js/guides/) - used for the interactive globe, markers, camera movement, popups, and map styling.
+- [Mapbox Dark 2D style reference](https://www.mapbox.com/gallery#mapbox-dark-2d) - used as the visual reference for the dark monochrome map theme.
+- [Google Cloud Vision documentation](https://cloud.google.com/vision/docs) - used for OCR, landmark detection, logo detection, and web-detection evidence.
+- [OpenRouter documentation](https://openrouter.ai/docs) - used to call Gemini vision models through a single model API gateway.
+- [LangGraph documentation](https://langchain-ai.github.io/langgraph/) - used to structure the backend workflow so Google Vision and Gemini clue extraction can run as separate steps before the final geolocation agent.
+- [OceanIR](https://app.oceanir.ai/?panel=history) - used as a product reference for image geolocation workflow, history, and result presentation.
+- [OceanIR photo location finder](https://oceanir.ai/photo-location-finder) - used as a reference for visible-evidence geolocation without relying on EXIF/GPS metadata.
+- [Picarta](https://picarta.ai/picarta-v2) - used as another product reference for AI-assisted photo geolocation and coordinate output.
