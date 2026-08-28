@@ -1,6 +1,8 @@
-# Image Geolocation Globe
+# StepInsight Interview Challenge
 
-Browser prototype for uploading an image file or image URL, sending it to a geolocation API, and pinning the returned coordinates on a Mapbox GL JS globe.
+Image geolocation prototype built for the StepInsight interview challenge.
+
+The challenge is to identify where photos were taken and return latitude and longitude as accurately as possible. This project approaches that problem as a visible-evidence geolocation workflow: upload an image file or image URL, extract visual and OCR clues, combine the evidence through a backend agent workflow, and pin the final coordinates on a Mapbox GL JS globe.
 
 ## What Mapbox Does
 
