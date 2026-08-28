@@ -30,6 +30,8 @@ This project started as a practical attempt to solve the StepInsight image geolo
 
 The main roadblock was accuracy. With no metadata available, the system had to depend entirely on observable clues such as text, landmarks, architecture, terrain, vegetation, road layout, and surrounding context. Another challenge was controlling model hallucination. A model can produce a confident-looking answer even when the evidence is weak, so I separated clue extraction from final coordinate selection and kept the intermediate outputs visible for review. I also avoided over-engineering the first version: instead of building many agents immediately, I focused on the highest-value components first, then left clear extension points for search, map verification, satellite comparison, and ranking.
 
+Google Cloud Vision was chosen because it provides deterministic OCR and structured detection outputs for text, landmarks, logos, labels, and web matches. This gives the system a grounded evidence layer before any generative model is asked to reason. Gemini was used through OpenRouter for the visual clue agent because it performed well for image understanding while still fitting the cost/value target for this prototype. Using OpenRouter also keeps the model layer flexible: the same workflow can test other vision-enabled models later without rewriting the orchestration or frontend.
+
 ### Features Implemented
 
 - Image file upload and image URL input.
