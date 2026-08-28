@@ -67,9 +67,11 @@ Implemented endpoints:
 GET  /health
 POST /extract-clues
 POST /geolocate
+GET  /agent-results
+GET  /agent-results/{run_id}
 ```
 
-For this stage, use `/extract-clues` to inspect visual/OCR clues. `/geolocate` currently returns the clue extraction result as debug output; coordinate ranking comes in the next implementation stage.
+Use `/extract-clues` to inspect the visual/OCR clue extraction stage only. Use `/geolocate` for the full LangGraph workflow that runs Google Vision and Gemini clue extraction in parallel, then sends both evidence sets into the final geolocation agent.
 
 Google Cloud Vision is the primary OCR provider. Set `OCR_PROVIDER=google` in `backend/.env`, enable the Cloud Vision API in your Google Cloud project, and paste the service-account JSON as a single-line `GOOGLE_APPLICATION_CREDENTIALS_JSON` value. A file path in `GOOGLE_APPLICATION_CREDENTIALS` is also supported. `GOOGLE_VISION_FEATURES` controls the Google features requested; the current live setting is `text,landmark,logo,web`, which returns OCR structure plus landmark, logo, and web-detection clues. Leave `OCR_PROVIDER=none` only when you want OpenRouter-only clue extraction without OCR.
 
@@ -99,22 +101,35 @@ Current files:
 ```text
 google_vision.json       Google Vision OCR/landmark/logo/web response extracted by the backend
 vision_clue_model.json   OpenRouter/OpenAI clue-model result or error
-final_response.json      final `/extract-clues` API response
+final_geolocation_agent.json final coordinate decision from the final agent
+final_result_validation.json backend validation summary for the final result
+geolocation_graph.json   full LangGraph workflow output
 ```
+
+## Prompt Files
+
+Agent prompts are stored as Markdown files so they can be reviewed and improved without changing application code:
+
+```text
+backend/prompts/vision_clue_agent.md
+backend/prompts/final_geolocation_agent.md
+```
+
+The vision clue prompt focuses only on observable image evidence. The final geolocation prompt combines Google Vision evidence and Gemini clue extraction to choose the most likely coordinates.
 
 ## Required Setup
 
 1. Create a Mapbox public token from your Mapbox account.
 2. Paste it into the app.
-3. Add your geolocation API endpoint.
+3. Use the default geolocation API endpoint, or set it to `http://localhost:8000/geolocate`.
 4. Upload an image or enter an image URL.
 5. Click `Analyze`.
 
-The `Demo Pin` button verifies the Mapbox globe and marker without needing a backend.
+The `Clear Pin` button removes the current marker and resets the map view.
 
 ## UI Surfaces
 
-The side panel remains the full control and debugging surface. A floating dark translucent quick-action panel sits over the globe and uses the same shared state and functions, so File/URL selection, previews, Analyze, Demo Pin, and Clear Pin stay synchronized.
+The side panel remains the full control and debugging surface. A floating dark translucent quick-action panel sits over the globe and uses the same shared state and functions, so File/URL selection, previews, Analyze, Clear Pin, and previous-result loading stay synchronized.
 
 ## Image Inputs
 
@@ -124,9 +139,9 @@ Image URLs must start with `http://` or `https://` and the URL path must end in 
 
 ## Map Style
 
-The app uses Mapbox Streets with globe projection:
+The app uses a custom Mapbox style with globe projection:
 
 ```js
-style: "mapbox://styles/mapbox/streets-v12",
+style: "mapbox://styles/renceboey/cmt6tk6rx006q01skha9ndkbs",
 projection: "globe"
 ```
