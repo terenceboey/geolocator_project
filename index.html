@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Geolocation Globe</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.28.1/mapbox-gl.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="control-panel" aria-label="Image geolocation controls">
+        <div class="brand-row">
+          <div>
+            <p class="eyebrow">Image Geolocation</p>
+            <h1>Globe Pinpoint Tool</h1>
+          </div>
+          <span class="status-pill" id="mapStatus">Map waiting</span>
+        </div>
+
+        <label class="field">
+          <span>Mapbox public token</span>
+          <input id="mapboxToken" type="password" autocomplete="off" placeholder="pk..." />
+        </label>
+
+        <label class="field">
+          <span>Geolocation API endpoint</span>
+          <input id="apiEndpoint" type="url" placeholder="https://your-api.com/geolocate" />
+        </label>
+
+        <div class="input-tabs" role="tablist" aria-label="Image source">
+          <button id="fileTab" class="active" type="button">File</button>
+          <button id="urlTab" type="button">URL</button>
+        </div>
+
+        <div id="filePanel" class="source-panel">
+          <label class="drop-zone" for="imageFile">
+            <input id="imageFile" type="file" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" />
+            <span id="sideFileName">Choose an image</span>
+            <small>PNG, JPG, JPEG, or WebP. Max 10 MB.</small>
+          </label>
+        </div>
+
+        <div id="urlPanel" class="source-panel hidden">
+          <label class="field">
+            <span>Image URL</span>
+            <input id="imageUrl" type="url" placeholder="https://example.com/photo.jpg" />
+          </label>
+        </div>
+
+        <div class="preview-wrap">
+          <img id="preview" alt="Selected image preview" />
+          <div id="emptyPreview" class="empty-preview">Image preview</div>
+        </div>
+
+        <div class="action-grid">
+          <button id="analyzeButton" class="primary" type="button">Analyze</button>
+          <button id="clearButton" type="button">Clear Pin</button>
+        </div>
+
+        <section class="history-panel" aria-label="Previous geolocation results">
+          <div class="history-head">
+            <span>Previous results</span>
+            <button id="refreshResultsButton" type="button">Refresh</button>
+          </div>
+          <select id="previousResultsSelect" aria-label="Previous result runs">
+            <option value="">No previous results loaded</option>
+          </select>
+          <button id="loadResultButton" type="button">Load selected result</button>
+        </section>
+
+        <section class="result-panel" aria-label="Geolocation result">
+          <div id="finalResult" class="final-result">Ready. Add a Mapbox token, choose an image, then call your geolocation API.</div>
+          <button id="detailsToggle" class="details-toggle" type="button" hidden>More details</button>
+          <pre id="resultBox" class="result-box" hidden></pre>
+        </section>
+      </section>
+
+      <section class="map-stage" aria-label="Mapbox globe">
+        <div id="map"></div>
+        <section class="floating-panel" aria-label="Quick image geolocation controls">
+          <div class="floating-head">
+            <div>
+              <p class="eyebrow">Quick Pinpoint</p>
+              <h2>Image Search</h2>
+            </div>
+            <span class="status-pill" id="floatingMapStatus">Map waiting</span>
+          </div>
+
+          <div class="input-tabs" role="tablist" aria-label="Floating image source">
+            <button id="floatingFileTab" class="active" type="button">File</button>
+            <button id="floatingUrlTab" type="button">URL</button>
+          </div>
+
+          <div id="floatingFilePanel" class="source-panel">
+            <label class="drop-zone floating-drop-zone" for="floatingImageFile">
+              <input id="floatingImageFile" type="file" accept=".png,.jpg,.jpeg,.webp,image/png,image/jpeg,image/webp" />
+              <span id="floatingFileName">Choose an image</span>
+              <small>PNG, JPG, JPEG, or WebP. Max 10 MB.</small>
+            </label>
+          </div>
+
+          <div id="floatingUrlPanel" class="source-panel hidden">
+            <label class="field">
+              <span>Image URL</span>
+              <input id="floatingImageUrl" type="url" placeholder="https://example.com/photo.jpg" />
+            </label>
+          </div>
+
+          <div class="preview-wrap floating-preview-wrap">
+            <img id="floatingPreview" alt="Selected image preview" />
+            <div id="floatingEmptyPreview" class="empty-preview">Image preview</div>
+          </div>
+
+          <div class="action-grid">
+            <button id="floatingAnalyzeButton" class="primary" type="button">Analyze</button>
+            <button id="floatingClearButton" type="button">Clear Pin</button>
+          </div>
+
+          <div id="floatingResult" class="floating-result">Ready.</div>
+        </section>
+      </section>
+    </main>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.28.1/mapbox-gl.js"></script>
+    <script src="./app.js?v=20260828-history-loader"></script>
+  </body>
+</html>

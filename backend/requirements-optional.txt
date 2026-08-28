@@ -1,0 +1,2 @@
+# Optional Google Gemini SDK. OpenRouter is the current default vision model path.
+google-genai
