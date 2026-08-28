@@ -4,6 +4,26 @@ Image geolocation prototype built for the StepInsight interview challenge.
 
 The challenge is to identify where photos were taken and return latitude and longitude as accurately as possible. This project approaches that problem as a visible-evidence geolocation workflow: upload an image file or image URL, extract visual and OCR clues, combine the evidence through a backend agent workflow, and pin the final coordinates on a Mapbox GL JS globe.
 
+## Challenge Results
+
+| Image | Predicted location | Coordinates |
+| --- | --- | --- |
+| Image 1 | Darrell K Royal-Texas Memorial Stadium, Austin, Texas, United States | `30.279030, -97.732460` |
+| Image 2 | Texas African American History Memorial, Austin, Texas, United States | `30.273282, -97.741493` |
+| Image 3 | Echo Point Lookout / Three Sisters, Katoomba, New South Wales, Australia | `-33.732740, 150.311935` |
+
+### Image 1 Result
+
+![Image 1 geolocation result](assets/results/image-1-stadium-result.png)
+
+### Image 2 Result
+
+![Image 2 geolocation result](assets/results/image-2-memorial-result.png)
+
+### Image 3 Result
+
+![Image 3 geolocation result](assets/results/image-3-three-sisters-result.png)
+
 ## What Mapbox Does
 
 Mapbox renders the globe, camera movement, marker, popup, and map style. It does not infer a photo location from pixels.
