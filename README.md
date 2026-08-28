@@ -24,6 +24,40 @@ The challenge is to identify where photos were taken and return latitude and lon
 
 ![Image 3 geolocation result](assets/results/image-3-three-sisters-result.png)
 
+## Reflection
+
+This project started as a practical attempt to solve the StepInsight image geolocation challenge without relying on EXIF or GPS metadata. I treated the task as an OSINT-style investigation problem rather than a simple image classification problem. The goal was not just to ask a model where an image was taken, but to build a small workflow that could extract visible evidence, preserve the reasoning trail, and return coordinates that can be checked on a map.
+
+The main roadblock was accuracy. With no metadata available, the system had to depend entirely on observable clues such as text, landmarks, architecture, terrain, vegetation, road layout, and surrounding context. Another challenge was controlling model hallucination. A model can produce a confident-looking answer even when the evidence is weak, so I separated clue extraction from final coordinate selection and kept the intermediate outputs visible for review. I also avoided over-engineering the first version: instead of building many agents immediately, I focused on the highest-value components first, then left clear extension points for search, map verification, satellite comparison, and ranking.
+
+### Features Implemented
+
+- Image file upload and image URL input.
+- Input validation for PNG, JPG, JPEG, and WebP files up to 10 MB.
+- Original image pixels are preserved for OCR and vision analysis.
+- Google Cloud Vision OCR, landmark detection, logo detection, label detection, and web detection.
+- Gemini vision clue extraction through OpenRouter.
+- LangGraph backend orchestration for separate Google Vision, Gemini clue extraction, and final geolocation stages.
+- Final geolocation agent that combines Google Vision evidence and Gemini visual clues.
+- Mapbox globe visualization with coordinate pinning, popup display, and reset control.
+- Side panel and floating UI using shared frontend state so controls do not drift out of sync.
+- Local JSON result logging for reviewing each agent output after every Analyze run.
+- Previous result loading from saved local agent outputs.
+
+### Features Not Implemented Yet
+
+What is still missing is the verification and ranking layer. At the moment, the system extracts evidence and asks a final model to choose coordinates, but it does not independently verify candidates against real-world map data. It also does not generate several competing hypotheses, search each one, reject weak ones, and rank the strongest candidate based on evidence agreement.
+
+- Web search agent to verify names, signs, businesses, slogans, and local context.
+- Candidate generation step that produces multiple possible locations before final selection.
+- Map verification agent to compare roads, coastlines, terrain, and place layout against each candidate.
+- Satellite or Street View comparison for visual confirmation of landscape and built environment.
+- Reverse image search for recognizable landmarks or indexed photos.
+- Candidate ranking agent that scores supporting and conflicting evidence across sources.
+- Conflict handling when OCR, visual clues, and map evidence disagree.
+- Evidence-based confidence scoring instead of relying mainly on model judgement.
+- Database-backed result storage instead of local JSON files.
+
 ## What Mapbox Does
 
 Mapbox renders the globe, camera movement, marker, popup, and map style. It does not infer a photo location from pixels.
