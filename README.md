@@ -72,8 +72,9 @@ Set your OpenRouter key in `backend/.env`:
 VISION_PROVIDER=openrouter
 OPENROUTER_API_KEY=your_key_here
 OPENROUTER_VISION_MODEL=google/gemini-2.5-pro
+OPENROUTER_MAX_TOKENS=3000
 OCR_PROVIDER=google
-GOOGLE_VISION_FEATURES=text,landmark,logo,web
+GOOGLE_VISION_FEATURES=text,landmark,logo,label,web
 GOOGLE_APPLICATION_CREDENTIALS_JSON={"type":"service_account","project_id":"...","private_key_id":"...","private_key":"-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n","client_email":"...","token_uri":"https://oauth2.googleapis.com/token"}
 ```
 
@@ -95,7 +96,7 @@ GET  /agent-results/{run_id}
 
 Use `/extract-clues` to inspect the visual/OCR clue extraction stage only. Use `/geolocate` for the full LangGraph workflow that runs Google Vision and Gemini clue extraction in parallel, then sends both evidence sets into the final geolocation agent.
 
-Google Cloud Vision is the primary OCR provider. Set `OCR_PROVIDER=google` in `backend/.env`, enable the Cloud Vision API in your Google Cloud project, and paste the service-account JSON as a single-line `GOOGLE_APPLICATION_CREDENTIALS_JSON` value. A file path in `GOOGLE_APPLICATION_CREDENTIALS` is also supported. `GOOGLE_VISION_FEATURES` controls the Google features requested; the current live setting is `text,landmark,logo,web`, which returns OCR structure plus landmark, logo, and web-detection clues. Leave `OCR_PROVIDER=none` only when you want OpenRouter-only clue extraction without OCR.
+Google Cloud Vision is the primary OCR provider. Set `OCR_PROVIDER=google` in `backend/.env`, enable the Cloud Vision API in your Google Cloud project, and paste the service-account JSON as a single-line `GOOGLE_APPLICATION_CREDENTIALS_JSON` value. A file path in `GOOGLE_APPLICATION_CREDENTIALS` is also supported. `GOOGLE_VISION_FEATURES` controls the Google features requested; the current live setting is `text,landmark,logo,label,web`, which returns OCR structure plus landmark, logo, label, and web-detection clues. Leave `OCR_PROVIDER=none` only when you want OpenRouter-only clue extraction without OCR.
 
 The `/extract-clues` response includes:
 
@@ -108,6 +109,7 @@ ocr_lines            grouped OCR lines
 ocr_blocks           grouped OCR blocks
 google_landmarks     detected landmark names, boxes, and coordinates when available
 google_logos         detected brand/logo names
+google_labels        detected general image labels
 google_web_entities  web-detection entities
 google_web_pages     matching web pages from web detection
 ```

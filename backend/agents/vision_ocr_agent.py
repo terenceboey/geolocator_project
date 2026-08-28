@@ -198,6 +198,19 @@ def parse_google_logos(response: Any) -> list[VisionDetection]:
     return detections
 
 
+def parse_google_labels(response: Any) -> list[VisionDetection]:
+    detections: list[VisionDetection] = []
+    for label in response.label_annotations:
+        detections.append(
+            VisionDetection(
+                name=label.description,
+                confidence=float(label.score) if label.score else None,
+                source="google_label_detection",
+            )
+        )
+    return detections
+
+
 def parse_google_web_detection(response: Any) -> tuple[list[WebEntity], list[WebPageMatch]]:
     web_detection = response.web_detection
     web_entities = [
@@ -229,6 +242,7 @@ def google_vision_features(vision: Any) -> list[Any]:
         "document_text": vision.Feature.Type.DOCUMENT_TEXT_DETECTION,
         "landmark": vision.Feature.Type.LANDMARK_DETECTION,
         "logo": vision.Feature.Type.LOGO_DETECTION,
+        "label": vision.Feature.Type.LABEL_DETECTION,
         "web": vision.Feature.Type.WEB_DETECTION,
     }
     return [vision.Feature(type_=feature_map[name]) for name in feature_names if name in feature_map]
@@ -260,6 +274,7 @@ async def run_google_vision_ocr(image_bytes: bytes) -> GoogleVisionResult:
         ocr_blocks=blocks,
         landmarks=parse_google_landmarks(response),
         logos=parse_google_logos(response),
+        labels=parse_google_labels(response),
         web_entities=web_entities,
         web_pages=web_pages,
     )
@@ -617,6 +632,7 @@ async def vision_ocr_agent(
         ocr_lines=google_vision.ocr_lines,
         google_landmarks=google_vision.landmarks,
         google_logos=google_vision.logos,
+        google_labels=google_vision.labels,
         google_web_entities=google_vision.web_entities,
         google_web_pages=google_vision.web_pages,
         clues=vision_clues,

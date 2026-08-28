@@ -58,6 +58,7 @@ class GoogleVisionResult(BaseModel):
     ocr_blocks: list[OCRTextGroup] = Field(default_factory=list)
     landmarks: list[VisionDetection] = Field(default_factory=list)
     logos: list[VisionDetection] = Field(default_factory=list)
+    labels: list[VisionDetection] = Field(default_factory=list)
     web_entities: list[WebEntity] = Field(default_factory=list)
     web_pages: list[WebPageMatch] = Field(default_factory=list)
 
@@ -95,6 +96,7 @@ class ClueExtractionResult(BaseModel):
     ocr_lines: list[OCRTextGroup] = Field(default_factory=list)
     google_landmarks: list[VisionDetection] = Field(default_factory=list)
     google_logos: list[VisionDetection] = Field(default_factory=list)
+    google_labels: list[VisionDetection] = Field(default_factory=list)
     google_web_entities: list[WebEntity] = Field(default_factory=list)
     google_web_pages: list[WebPageMatch] = Field(default_factory=list)
     clues: VisionClues

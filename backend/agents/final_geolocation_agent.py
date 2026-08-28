@@ -28,6 +28,7 @@ def google_vision_evidence(google_vision: GoogleVisionResult) -> dict[str, Any]:
         "ocr_lines": [line.text for line in google_vision.ocr_lines[:20]],
         "landmarks": [item.model_dump(exclude_none=True) for item in google_vision.landmarks[:8]],
         "logos": [item.model_dump(exclude_none=True) for item in google_vision.logos[:8]],
+        "labels": [item.model_dump(exclude_none=True) for item in google_vision.labels[:12]],
         "web_entities": [item.model_dump(exclude_none=True) for item in google_vision.web_entities[:8]],
         "web_pages": [item.model_dump(exclude_none=True) for item in google_vision.web_pages[:5]],
     }
